@@ -1,5 +1,6 @@
 
 import { toast } from "sonner";
+import { mockApiService } from './mockData';
 
 const API_URL = "https://api.mscv2group1.link"; // Base API URL
 
@@ -32,6 +33,9 @@ const handleApiError = (error: any) => {
   toast.error(message);
   return Promise.reject(error);
 };
+
+// Toggle this to use mock data instead of real API
+const USE_MOCK_API = true;
 
 // API request helper with auth headers
 async function apiRequest<T>(
@@ -66,7 +70,7 @@ async function apiRequest<T>(
 }
 
 // Photo management APIs
-export const photoApi = {
+export const photoApi = USE_MOCK_API ? mockApiService : {
   // Get active photos with pagination
   getPhotos: (page = 1, limit = 20): Promise<PaginatedResponse<Photo>> => 
     apiRequest(`/images?page=${page}&limit=${limit}`),
